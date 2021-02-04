@@ -508,38 +508,39 @@
 
                                     ?>
                                     @if($araguaia == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/ARAGUAIA.jpeg" alt="image" />
+                                        <img  id="imagem-Fotos" src="assets/images/faces/logos/ARAGUAIA.png" alt="image" />
+                                        
                                     @endif
                                     @if($fam == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/FAN.png"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/FAN.png" alt="image" />
                                     @endif
                                     @if($phenix == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/das.jpeg"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/das.jpeg"  alt="image" />
                                     @endif
                                     @if($tabocao == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/TABOCAO.jpg"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/TABOCAO.jpg"  alt="image" />
                                     @endif
                                     @if($larco == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/LARCO.jpg"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/LARCO.jpg"  alt="image" />
                                     @endif
                                     @if($federal == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/FEDERAL.jpg"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/FEDERAL.jpg"  alt="image" />
                                     @endif
                                     @if($petro == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/PETROBALL.jpg"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/PETROBALL.jpg"  alt="image" />
                                     @endif
                                     @if($tdc == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/sem-foto.gif"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/sem-imagem.png"  alt="image" />
                                     @endif
                                     @if($denusa == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/DENUSA.jpg"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/DENUSA.jpg"  alt="image" />
                                     @endif
                                     @if($rio == $tomadorSemEspacos)
-                                        <img src="assets/images/faces/logos/RIO-BRANCO.jpg"  alt="image" />
+                                        <img id="imagem-Fotos" src="assets/images/faces/logos/rio.jpg"  alt="image" />
                                     @endif
 
                                     @if($tomadorSemEspacos != $rio && $tomadorSemEspacos != $denusa && $tomadorSemEspacos != $tdc && $tomadorSemEspacos !=$petro && $tomadorSemEspacos != $federal && $tomadorSemEspacos !=$larco && $tomadorSemEspacos != $tabocao && $tomadorSemEspacos != $phenix && $tomadorSemEspacos !=$fam && $tomadorSemEspacos !=$araguaia)
-                                        <img src="assets/images/faces/logos/sem-foto.gif"  alt="image" />
+                                    <img id="imagem-Fotos" src="assets/images/faces/logos/sem-imagem.png"  alt="image" />
                                     @endif
 
 

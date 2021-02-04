@@ -7601,8 +7601,16 @@ figure {
   margin: 0 0 1rem; }
 
 img {
-  vertical-align: middle;
-  border-style: none; }
+  vertical-align: top;
+  border-style: none; 
+  width: 204px;
+  height: 138px;
+  position: relative;
+  top: 0px; 
+  left: 0px; 
+ 
+  
+}
 
 svg {
   overflow: hidden;
@@ -17856,9 +17864,12 @@ div.tagsinput {
     .table th img, .jsgrid .jsgrid-table th img,
     .table td img,
     .jsgrid .jsgrid-table td img {
-      width: 30px;
-      height: 30px;
-      border-radius: 100%; }
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+     
+ }
+
     .table th .badge, .jsgrid .jsgrid-table th .badge,
     .table td .badge,
     .jsgrid .jsgrid-table td .badge {
@@ -21116,3 +21127,28 @@ isso só que achei o erro kk  <---- tava com 2 jpe
 .select2-container--default .select2-selection--multiple .select2-selection__rendered.hover{
     color: white;
 }
+
+/* .imagem-araguaia {
+  background-position:relative;
+  background-repeat: no-repeat;
+  background-size: auto 3%;
+  background-position: left 3% top 1%;
+  border-radius: 12px;
+} */
+
+/*.imagem-fam {
+  background-image: url(assets/images/faces/logos/ARAGUAIA.jpeg);
+  background-position:relative;
+  background-repeat: no-repeat;
+  background-size: auto 3%;
+  background-position: left 3% top 1%;
+}*/
+
+
+
+#imagem-Fotos{
+  border-radius: 100px; 
+  width: 40px;
+  height: 40px;
+}
+
