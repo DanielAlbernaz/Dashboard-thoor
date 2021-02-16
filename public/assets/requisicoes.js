@@ -1,5 +1,5 @@
 function importarArquivo(){
-    event.preventDefault();
+    //event.preventDefault();
 
 
 
@@ -52,7 +52,7 @@ function importarArquivo(){
 
 
 function filtrar(){
-    event.preventDefault();
+    //event.preventDefault();
 
     //console.log($('#frmFiltrar').serialize());
 
@@ -110,9 +110,26 @@ function filtrar(){
 //     }
 //  }
 
+function limparFiltro(){
+   
+    var elementos = $('#motorista').html("");
+    
+    elementos.empty();
+    console.log(elementos);
+
+    
+}
+
+// function removeOptions(selectElement) {
+//     console.log(selectElement.empty());
+//     var i, L = selectElement.options.length - 1;
+//     for(i = L; i >= 0; i--) {
+//        selectElement.remove(i);
+//     }
+
 
 function cadastrarUsuario(){
-    event.preventDefault();
+    //event.preventDefault();
 
     console.log($('#frmCadUsuario').serialize());
 
@@ -222,7 +239,7 @@ function alterarUser(id){
 
 
 function editarUsuario(){
-    event.preventDefault();
+    //event.preventDefault();
 
     console.log($('#frmCadUsuario').serialize());
 
@@ -255,7 +272,7 @@ function editarUsuario(){
 }
 
 function logar(){
-    event.preventDefault();
+//    event.preventDefault();
 
     jQuery.ajax({
         url: "logar",

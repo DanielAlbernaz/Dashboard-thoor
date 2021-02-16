@@ -85,9 +85,13 @@
 
                 }
 
+                if(Session::get('tipo_filtro')){
+                  $tipo_filtro = Session::get('tipo_filtro');
+                }
 
 
-                     //print_r($placas);exit;
+                    // $tipo_filtro = 'placa';
+                    //print_r($tipo_filtro);exit;
                     // print_r(count($motora));
 
                 ?>
@@ -105,7 +109,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="modal fade" id="modalFiltro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content" style=" width: 1000px; height: 300px; margin-left: -45%;  margin-top: 45%;">
@@ -120,11 +123,11 @@
                         @csrf
                         <div class="form-group hover"  id="blocoMotorista"  onblur="mostrarPlaca();" >
                             <label>Motorista</label>
-                            <select class="js-example-basic-multiple" multiple="multiple" id="motorista[]" name="motorista[]" style="width:100%">
+                            <select class="js-example-basic-multiple" multiple="multiple" id="motorista" name="motorista[]" style="width:100%">
 
                                     @for($i = 0; $i < count($motora); $i++)
                                         @foreach ($arrayMotoristas as $arrayMotorista)
-                                            <?php if($motora[$i]['motorista'][0] == $arrayMotorista['motorista']){ ?>
+                                            <?php if($motora[$i]['motorista'][0] == $arrayMotorista['motorista'] && $tipo_filtro == 'motorista'){ ?>
                                                 <option selected value="<?=$motora[$i]['motorista'][0]?>"><?=$motora[$i]['motorista'][0]?></option>
                                             <?php }else{?>
                                                 <option value="<?=$arrayMotorista['motorista']?>"><?=$arrayMotorista['motorista']?></option>
@@ -141,7 +144,7 @@
                             <select class="js-example-basic-multiple" multiple="multiple" id="placa[]" name="placa[]" style="width:100%">
                                 @for($i = 0; $i < count($placas); $i++)
                                     @foreach ($arrayPlacas as $arrayPlaca)
-                                        <?php if($placas[$i][0] == $arrayPlaca['placa']){ ?>
+                                        <?php if($placas[$i][0] == $arrayPlaca['placa'] && $tipo_filtro == 'placa'){ ?>
                                             <option selected value="<?=$placas[$i][0]?>"><?=$placas[$i][0]?></option>
                                         <?php }else{?>
                                             <option value="<?=$arrayPlaca['placa']?>"><?=$arrayPlaca['placa']?></option>
@@ -171,7 +174,7 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                            <button type="button" class="btn btn-warning" onclick="limparFiltro();">Limpar filtros</button>
+                            <!-- <button type="button" class="btn btn-warning" onclick="limparFiltro();">Limpar filtros</button> -->
                             <button type="button" class="btn btn-primary" onclick="filtrar();">Aplicar filtros</button>
                           </div>
                       </form>
@@ -344,7 +347,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title" >
-                    DESEMPENHO THOOR 2019
+                    DESEMPENHO THOOR 2020
                     </h4>
                     <div class="table-responsive">
                     <table class="table">
@@ -379,7 +382,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title" >
-                    DESEMPENHO THOOR  2020
+                    DESEMPENHO THOOR  2021
                     </h4>
                     <div class="table-responsive">
                     <table class="table">
@@ -428,25 +431,38 @@
                         </thead>
                         <tbody >
                         @foreach($declinio as $anoAnterior)
-                            @if($anoAnterior['total_meses'] < 0)
+                            @if($anoAnterior['valor_mes_anterior'] > $anoAnterior['valor_mes_atual'] && $anoAnterior['valor_mes_atual'] <> 0)
                                 <tr style="color: red">
                                     <td style="padding: 5px" ><span class="mdi mdi-arrow-bottom-left icon-item" ></span></td>
                                     <td style="padding: 5px" >R$: {{ number_format($anoAnterior['total_meses'], 2, ',', '.') }} </td>
-                                    <td  >{{ number_format(isset($anoAnterior['percentual']), 2, ',', '.') }}% </td>
+                                    <td  >-{{ number_format($anoAnterior['percentual'], 2, ',', '.') }}% </td>
                                 </tr>
                             @endif
-                            @if($anoAnterior['total_meses'] > 0)
+                            @if($anoAnterior['valor_mes_atual'] == 0)
+                                <tr style="color: green">
+                                    <td style="padding: 5px" ><span class="mdi mdi-arrow-bottom-left icon-item" ></span></td>
+                                    <td style="padding: 5px" >R$: {{ number_format($anoAnterior['total_meses'], 2, ',', '.') }} </td>
+                                    <td  >{{ number_format($anoAnterior['percentual'], 2, ',', '.') }}% </td>
+                                </tr>
+                            @endif
+                            @if($anoAnterior['valor_mes_anterior'] < $anoAnterior['valor_mes_atual'])
                                 <tr style="color: green">
                                     <td style="padding: 5px"><span class="mdi mdi-arrow-top-right icon-item" ></span></td>
                                     <td style="padding: 5px" >R$: {{ number_format($anoAnterior['total_meses'], 2, ',', '.') }} </td>
-                                    <td  >{{ number_format(isset($anoAnterior['percentual']), 2, ',', '.') }}% </td>
+                                    <td  >{{ number_format($anoAnterior['percentual'], 2, ',', '.') }}% </td>
                                 </tr>
                             @endif
                         @endforeach
                           <tr>
                             <td style="color: white;" style="padding: 5px"> TOTAL</td>
-                            <td style="color: white;" style="padding: 5px"> R$: {{ number_format(Session::get('totalGeralCrescimentoDeclinio'), 2, ',', '.') }} </td>
-                            <td style="color: white;" >{{ number_format(Session::get('totalMediaPercentual'), 2, ',', '.') }}% </td>
+                            @if(Session::get('totalMesAnoPassado') > Session::get('totalMesAnoAtual'))
+                              <td style="color: red;" style="padding: 5px"> R$: {{ number_format(Session::get('totalGeralCrescimentoDeclinio'), 2, ',', '.') }} </td>
+                              <td style="color: red;" >-{{ number_format(Session::get('totalMediaPercentual'), 2, ',', '.') }}% </td>
+                            @endif
+                            @if(Session::get('totalMesAnoPassado') < Session::get('totalMesAnoAtual'))
+                              <td style="color: green;" style="padding: 5px"> R$: {{ number_format(Session::get('totalGeralCrescimentoDeclinio'), 2, ',', '.') }} </td>
+                              <td style="color: green;" >{{ number_format(Session::get('totalMediaPercentual'), 2, ',', '.') }}% </td>
+                            @endif
                           </tr>
                         </tbody>
                       </table>
@@ -496,20 +512,40 @@
                                     <?php
                                         $tomadorSemEspacos = str_replace(' ', '',  $totalDistribuidoras['tomador']);
                                         $araguaia = 'ARAGUAIADISTRIBUIDORADECOMBUSTIVEISS/A';
+                                        $araguai2 = 'ARAGUAIADISTRIB.DECOMBUSTIVEISS/A';
                                         $fam = 'FANDISTRIBUIDORADEPETROLEOLTDA';
                                         $phenix = 'PHOENIXDISTDECOMBUSTIVEISS/A';
                                         $tabocao = 'DISTRIBUIDORATABOCAOLTDA';
                                         $larco = 'LARCOCOMERCIALDEPRODUTOSDEPETROLEOLTDA.';
+                                        $larco2 = 'LARCOCOMERCIALDEPRODUTOSDEPETROLEOLTDA';
+                                        $larco3 = 'LARCOCOMERCIALDEPRODUTOSDEPETROLEO';
                                         $federal = 'FEDERALDISTRIBUIDORADEPETROLEOLTDA';
                                         $petro = 'PetroballDistribuidoradePetroleoLtda';
                                         $tdc = 'TDCDISTRIBUIDORADECOMBUSTIVEISS/A';
                                         $denusa = 'DENUSA-DESTILARIANOVAUNIAOS/A';
                                         $rio = 'DISTRIBUIDORARIOBRANCODEPETROLEOLTD';
+                                        $petroquality = 'PETROQUALITYDISTRDECOMBLTDA';
+                                        $tower = 'TOWERBRASILPETROLEOLTDA';
+                                        $petroquality2 = 'PETROQUALITYDISTRIBUIDORADECOMBUSTIVEISLTDA';
+                                        $jales = 'JallesMachadoS/A';
+                                        $jales2 = 'JallesMachadoS.A.';
+                                        $gol = 'GOLCOMBUSTIVEISS.A';
 
                                     ?>
-                                    @if($araguaia == $tomadorSemEspacos)
+                                    @if($araguaia == $tomadorSemEspacos || $araguai2 == $tomadorSemEspacos)
                                         <img  id="imagem-Fotos" src="assets/images/faces/logos/ARAGUAIA.png" alt="image" />
-                                        
+                                    @endif
+                                    @if($petroquality == $tomadorSemEspacos || $petroquality2 == $tomadorSemEspacos)
+                                        <img  id="imagem-Fotos" src="assets/images/faces/logos/ARAGUAIA.png" alt="image" />
+                                    @endif
+                                    @if($tower == $tomadorSemEspacos)
+                                        <img  id="imagem-Fotos" src="assets/images/faces/logos/TOWER.jpeg" alt="image" />
+                                    @endif
+                                    @if($jales == $tomadorSemEspacos || $jales2 == $tomadorSemEspacos)
+                                        <img  id="imagem-Fotos" src="assets/images/faces/logos/JALLESMACHADO.png" alt="image" />
+                                    @endif
+                                    @if($gol == $tomadorSemEspacos)
+                                        <img  id="imagem-Fotos" src="assets/images/faces/logos/GOL.jpeg" alt="image" />
                                     @endif
                                     @if($fam == $tomadorSemEspacos)
                                         <img id="imagem-Fotos" src="assets/images/faces/logos/FAN.png" alt="image" />
@@ -520,7 +556,7 @@
                                     @if($tabocao == $tomadorSemEspacos)
                                         <img id="imagem-Fotos" src="assets/images/faces/logos/TABOCAO.jpg"  alt="image" />
                                     @endif
-                                    @if($larco == $tomadorSemEspacos)
+                                    @if($larco == $tomadorSemEspacos || $larco2 == $tomadorSemEspacos || $larco3 == $tomadorSemEspacos)
                                         <img id="imagem-Fotos" src="assets/images/faces/logos/LARCO.jpg"  alt="image" />
                                     @endif
                                     @if($federal == $tomadorSemEspacos)
@@ -539,7 +575,7 @@
                                         <img id="imagem-Fotos" src="assets/images/faces/logos/rio.jpg"  alt="image" />
                                     @endif
 
-                                    @if($tomadorSemEspacos != $rio && $tomadorSemEspacos != $denusa && $tomadorSemEspacos != $tdc && $tomadorSemEspacos !=$petro && $tomadorSemEspacos != $federal && $tomadorSemEspacos !=$larco && $tomadorSemEspacos != $tabocao && $tomadorSemEspacos != $phenix && $tomadorSemEspacos !=$fam && $tomadorSemEspacos !=$araguaia)
+                                    @if($tomadorSemEspacos != $larco3 && $tomadorSemEspacos != $larco2 && $tomadorSemEspacos != $jales2 && $tomadorSemEspacos != $gol && $tomadorSemEspacos != $jales && $tomadorSemEspacos != $petroquality2 && $tomadorSemEspacos != $tower && $tomadorSemEspacos != $petroquality && $tomadorSemEspacos != $araguai2 && $tomadorSemEspacos != $rio && $tomadorSemEspacos != $denusa && $tomadorSemEspacos != $tdc && $tomadorSemEspacos !=$petro && $tomadorSemEspacos != $federal && $tomadorSemEspacos !=$larco && $tomadorSemEspacos != $tabocao && $tomadorSemEspacos != $phenix && $tomadorSemEspacos !=$fam && $tomadorSemEspacos !=$araguaia)
                                     <img id="imagem-Fotos" src="assets/images/faces/logos/sem-imagem.png"  alt="image" />
                                     @endif
 

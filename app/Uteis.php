@@ -17,9 +17,9 @@ function print_rpre($valor)
 
 function comecoMesAtual()
     {
-        // $data_incio = mktime(0, 0, 0, date('m') , 1 , date('Y'));
-        // $DataInicial = date('Y-m-d',$data_incio);
-        $DataInicial = '2010-01-01';
+        $data_incio = mktime(0, 0, 0, date('m') , 1 , date('Y'));
+        $DataInicial = date('Y-m-d',$data_incio);
+        //$DataInicial = '2010-01-01';
         return $DataInicial;
     }
 

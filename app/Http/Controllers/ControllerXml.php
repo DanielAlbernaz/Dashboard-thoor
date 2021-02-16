@@ -23,11 +23,12 @@ class ControllerXml extends Controller
                 if($linha != ''){
                     $arquivo[$i]['linha'] = $linha;
                     $i++;
+                    
                 }
             }
+
         }
-
-
+        
         $arquivoFormatado = array(); // daniel@daniel.com.br
         $contador = 0;
         for($i = 0; $i < count($arquivo); $i++){

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conhecimentos;
 use App\Filtro;
+use App\Grafico;
 use App\Uteis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,7 @@ class ControllerFiltro extends Controller
             $cont = 0;
             $contador = 0;
             $arrayPlacasResult = array();
+            $filtroPlaca = 1;
             for($p = 0; $p <= count($placas) - 1; $p++){
                 $total = Conhecimentos::select(DB::raw("SUM(valor_frete) as total"))->where('placa', '=', $placas[$p])->whereDate('data_emissao', '>=' ,$dataInicial )->whereDate('data_emissao', '<=' ,$dataFinal)->get();
 
@@ -148,14 +150,40 @@ class ControllerFiltro extends Controller
             Session::forget('faturamento_frota_motorista');
             Session::forget('faturamento_frota');
             Session::forget('total_receita_faturamento');
+            Session::forget('tipo_filtro');
 
+            // Session::put('motoristas', $arrayMotoristas);
+            // Session::put('total', $arrayMotora);
+
+            //Inicio Deleta tabela com array do grafico em seguida salva no banco o array para poder ordenar e ai sim cria a session com o svalores ajustados
+            DB::table('grafico')->truncate();
+            //$grafico = Grafico::find(1);
+            for($i = 0; $i < count($arrayMotoristas); $i++){
+                $grafico = new Grafico();
+                $grafico->array_dados = serialize($arrayMotoristas[$i]);
+                $grafico->total = $arrayMotora[$i];
+                $grafico->save();
+            }
+            
+            //$grafico = new Grafico();
+            $grafico = Grafico::select()->orderBy('total', 'desc')->get();
+
+            $arrayMotoristas = array();
+            $arrayMotora = array();
+            for($i = 0; $i < count($grafico); $i++){
+                $arrayMotoristas[$i] = unserialize($grafico[$i]['array_dados']);
+                $arrayMotora[$i] = $grafico[$i]['total'];
+            }
             Session::put('motoristas', $arrayMotoristas);
-            Session::put('motoristasComparar', $arrayMotoristas);
             Session::put('total', $arrayMotora);
-            Session::put('total_receita_faturamento', $totalReceitaFiltro);
+            //Fim Deleta tabela com array do grafico em seguida salva no banco o array para poder ordenar e ai sim cria a session com o svalores ajustados
 
+            
+            Session::put('motoristasComparar', $arrayMotoristas);            
+            Session::put('total_receita_faturamento', $totalReceitaFiltro);
             Session::put('faturamento_frota_motorista', $arrayFrota);
-            //print_rpre($arrayFrota);exit;
+            Session::put('tipo_filtro', 'placa');
+            
             if($salvarFiltro){
                 Session::put('placas_filtro', $request->placa);
                 $filtros = new Filtro();
@@ -271,14 +299,40 @@ class ControllerFiltro extends Controller
             Session::forget('total');
             Session::forget('total_receita_faturamento');
             Session::forget('faturamento_frota');
+            Session::forget('tipo_filtro');
 
 
+            DB::table('grafico')->truncate();
+            //$grafico = Grafico::find(1);
+            for($i = 0; $i < count($placasMotorista); $i++){
+                $grafico = new Grafico();
+                $grafico->array_dados = serialize($placasMotorista[$i]);
+                $grafico->total = $totalParaGrafico[$i];
+                $grafico->save();
+            }
+            
+            //$grafico = new Grafico();
+            $grafico = Grafico::select()->orderBy('total', 'desc')->get();
+
+            $placasMotorista = array();
+            $totalParaGrafico = array();
+            for($i = 0; $i < count($grafico); $i++){
+                $placasMotorista[$i] = unserialize($grafico[$i]['array_dados']);
+                $totalParaGrafico[$i] = $grafico[$i]['total'];
+            }
             Session::put('motoristas', $placasMotorista);
             Session::put('total', $totalParaGrafico);
-            Session::put('faturamento_frota_motorista', $arrayMotoristaFrota);
-            print_rpre($arrayMotoristaFrota);exit;
+
+
+
+
+
+
+            
+            Session::put('faturamento_frota_motorista', $arrayMotoristaFrota);            
             Session::put('total_receita_faturamento', $totalReceitaFiltro);
 
+            Session::put('tipo_filtro', 'motorista');
             if($salvarFiltro){
                 Session::put('placas_filtro', $request->placa);
                 $filtros = new Filtro();
